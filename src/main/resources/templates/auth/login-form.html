@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+    <link rel="stylesheet" href="/webjars/bootstrap/5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.10.2/font/bootstrap-icons.css">
+    <title th:text="#{page.login}"></title>
+</head>
+<body>
+<div id="content-wrapper" class="container bg-white rounded-3 shadow py-4 px-3"
+     style="max-width: 330px; margin-top: 6rem;">
+    <header>
+        <h1 class="text-center fs-2">
+            <i class="bi bi-pencil-square me-2"></i>
+            <span>To Do List</span>
+        </h1>
+    </header>
+    <hr>
+    <main>
+        <div th:if="${param.error}" class="alert alert-danger p-2 text-center" role="alert">
+            ID, Password를 확인하세요.
+        </div>
+
+        <form th:action="@{/login(requestUri=${param.requestUri})}" method="post">
+            <div class="mb-3">
+                <label for="username" class="form-label">ID</label>
+                <input id="username" name="username" type="text" class="form-control form-control-sm" placeholder="ID">
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input id="password" name="password" type="password" class="form-control form-control-sm" placeholder="Password">
+            </div>
+
+            <input type="submit" value="Login" class="btn btn-primary w-100 mb-3">
+            <div class="text-center">
+                <a href="/signup" class="text-decoration-none" style="font-size: 14px;">
+                    <i class="bi bi-box-arrow-in-right me-1"></i>
+                    <span>계정이 없으신가요?</span>
+                </a>
+            </div>
+        </form>
+    </main>
+</div>
+<script src="/webjars/bootstrap/5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
