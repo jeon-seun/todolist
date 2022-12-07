@@ -2,8 +2,8 @@ package me.seun.todolist.web.auth;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import me.seun.todolist.domain.auth.AuthService;
-import me.seun.todolist.domain.exception.AuthenticationFailedException;
+import me.seun.todolist.domain.auth.LoginService;
+import me.seun.todolist.domain.exception.LoginFailedException;
 import me.seun.todolist.domain.member.Member;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,29 +11,31 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import static me.seun.todolist.web.constants.SessionConstants.LOGIN_MEMBER;
+
 @RequiredArgsConstructor
 @Controller
-public class AuthController {
+public class LoginController {
 
-    private final AuthService authService;
+    private final LoginService loginService;
 
-    @GetMapping("/auth/login")
+    @GetMapping("/login")
     public String showLoginForm() {
         return "auth/login-form";
     }
 
-    @PostMapping("/auth/login")
+    @PostMapping("/login")
     public String processLogin(@RequestParam String username,
                                @RequestParam String password,
                                @RequestParam(defaultValue = "/") String redirectUri,
                                HttpSession session) {
-        Member member = authService.authenticate(username, password);
-        session.setAttribute("LOGIN_MEMBER", member);
+        Member member = loginService.login(username, password);
+        session.setAttribute(LOGIN_MEMBER, member);
         return "redirect:" + redirectUri;
     }
 
-    @ExceptionHandler(AuthenticationFailedException.class)
+    @ExceptionHandler(LoginFailedException.class)
     public String handleAuthenticationFail() {
-        return "redirect:/auth/login?error";
+        return "redirect:/login?error";
     }
 }

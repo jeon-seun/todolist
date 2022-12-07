@@ -1,7 +1,7 @@
 package me.seun.todolist.web.auth;
 
-import me.seun.todolist.domain.auth.AuthService;
-import me.seun.todolist.domain.exception.AuthenticationFailedException;
+import me.seun.todolist.domain.auth.LoginService;
+import me.seun.todolist.domain.exception.LoginFailedException;
 import me.seun.todolist.domain.member.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +15,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest
-class AuthControllerTest {
+@WebMvcTest(LoginController.class)
+class LoginControllerTest {
 
     @Autowired
     MockMvc mockMvc;
 
     @MockBean
-    AuthService authService;
+    LoginService loginService;
 
     @Test
     void showLoginForm() throws Exception {
         // given
-        String requestUri = "/auth/login";
+        String requestUri = "/login";
 
         // when & then
         mockMvc.perform(get(requestUri))
@@ -40,11 +40,11 @@ class AuthControllerTest {
         // given
         String username = "tester1";
         String password = "1234";
-        given(authService.authenticate(username, password))
+        given(loginService.login(username, password))
                 .willReturn(new Member(username, password));
 
         // when & then
-        mockMvc.perform(post("/auth/login")
+        mockMvc.perform(post("/login")
                         .param("username", username)
                         .param("password", password))
                 .andExpect(status().is3xxRedirection());
@@ -53,15 +53,15 @@ class AuthControllerTest {
     @Test
     void processLoginFail() throws Exception {
         // given
-        given(authService.authenticate(any(), any()))
-                .willThrow(AuthenticationFailedException.class);
+        given(loginService.login(any(), any()))
+                .willThrow(LoginFailedException.class);
 
         // when & then
-        mockMvc.perform(post("/auth/login")
+        mockMvc.perform(post("/login")
                         .param("username", "tester1")
                         .param("password", "1234"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/auth/login?error"));
+                .andExpect(redirectedUrl("/login?error"));
     }
 
 }

@@ -24,7 +24,7 @@
             ID, Password를 확인하세요.
         </div>
 
-        <form th:action="@{/auth/login(requestUri=${param.requestUri})}" method="post">
+        <form th:action="@{/login(requestUri=${param.requestUri})}" method="post">
             <div class="mb-3">
                 <label for="username" class="form-label">ID</label>
                 <input id="username" name="username" type="text" class="form-control form-control-sm" placeholder="ID">
