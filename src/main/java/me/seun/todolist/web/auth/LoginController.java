@@ -35,7 +35,7 @@ public class LoginController {
     }
 
     @ExceptionHandler(LoginFailedException.class)
-    public String handleAuthenticationFail() {
+    public String handleLoginFail() {
         return "redirect:/login?error";
     }
 }
