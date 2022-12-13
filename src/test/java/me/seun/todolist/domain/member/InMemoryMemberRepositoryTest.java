@@ -8,7 +8,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class InMemoryMemberRepositoryTest {
-
     MemberRepository memberRepository;
 
     @BeforeEach

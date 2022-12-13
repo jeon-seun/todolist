@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+    <link rel="stylesheet" href="/webjars/bootstrap/5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.10.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title th:text="#{page.signup}"></title>
+
+    <style>
+        #content-wrapper {
+            max-width: 330px;
+            margin-top: 6rem;
+        }
+
+        @media screen and (min-width: 568px) {
+            #content-wrapper {
+                max-width: 560px;
+            }
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="content-wrapper" class="container bg-white rounded-3 shadow py-4 px-3">
+    <header class="text-center">
+        <h1 th:text="#{logo}"></h1>
+        <h2 th:text="#{page.signup}" class="fs-4"></h2>
+    </header>
+
+    <hr>
+
+    <form action="" method="post" th:object="${signup}" class="container">
+
+        <div class="row mb-3">
+            <p class="text-danger" th:text="${param.error}"></p>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12">
+                <label for="username" class="form-label" th:text="#{label.signup.username}"></label>
+                <input id="username" type="text" class="form-control" th:field="*{username}" th:errorclass="is-invalid">
+                <div class="invalid-feedback" th:errors="*{username}"></div>
+                <div class="form-text" th:unless="${#fields.hasErrors('username')}"
+                     th:text="#{prompt.signup.username}"></div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12 col-md-6 mb-3">
+                <label for="password" class="form-label" th:text="#{label.signup.password}"></label>
+                <input id="password" type="password" class="form-control" th:field="*{password}"
+                       th:errorclass="is-invalid">
+                <div class="invalid-feedback" th:errors="*{password}"></div>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <label for="passwordCheck" class="form-label" th:text="#{label.signup.passwordCheck}"></label>
+                <input id="passwordCheck" type="password" class="form-control" th:field="*{passwordCheck}"
+                       th:classappend="${#fields.hasErrors('matchedPassword')} ? 'is-invalid' : _">
+                <div class="invalid-feedback" th:errors="*{matchedPassword}"></div>
+            </div>
+
+            <div class="form-text"
+                 th:unless="${#fields.hasErrors('password')} or ${#fields.hasErrors('matchedPassword')}"
+                 th:text="#{prompt.signup.password}"></div>
+
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12">
+                <input id="agree-check" type="checkbox" class="form-check-input" th:field="*{agree}"
+                       th:errorclass="is-invalid">
+                <label for="agree-check" class="form-check-label" style="font-size: 14px;">
+                    <a href="" class="text-decoration-none" data-bs-toggle="modal"
+                       data-bs-target="#caution-modal" th:text="#{label.signup.caution}"></a>
+                    <span th:text="#{prompt.signup.caution}"></span>
+                </label>
+                <div class="invalid-feedback" th:errors="*{agree}"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <input type="submit" class="btn btn-primary w-100" th:value="#{label.signup.submit}">
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal fade" id="caution-modal" tabindex="-1" aria-labelledby="caution-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" th:text="#{label.signup.modal.agree}"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p th:text="#{announcement.signup.first}"></p>
+                <p th:text="#{announcement.signup.second}"></p>
+                <p th:text="#{announcement.signup.three}"></p>
+            </div>
+
+            <div class="modal-footer">
+                <button id="btn-agree" type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        th:text="#{label.signup.modal.submit}"></button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/webjars/bootstrap/5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const checkbox = document.querySelector("#agree-check");
+    const modalCheck = document.querySelector("#btn-agree");
+
+    modalCheck.addEventListener('click', () => {
+        checkbox.checked = true;
+    })
+</script>
+</body>
+</html>
